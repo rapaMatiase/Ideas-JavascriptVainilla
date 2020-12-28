@@ -1,43 +1,34 @@
-
-
-function Caynon(_context) {
+function Caynon(_canvas, _context) {
       this.fireworks = []
       this.counter = 0
       this.context = _context
+      this.canvas = _canvas
       this.size = {
-            height : 0,
-            width : 0
+            height: 0,
+            width: 0
       }
-      this.center = 0
-      this.spawnA = 0
-      this.spawnB = 0
-      this.spawnC = 0
-      this.spawnD = 0
-}
-
-Caynon.prototype.resize = function () {
-      this.size.width = canvas.width = window.innerWidth
-      this.center = this.size.width / 2 | 0
-      this.spawnA = this.center - this.center / 4 | 0
-      this.spawnB = this.center + this.center / 4 | 0
-      this.size.height = canvas.height = window.innerHeight
-      this.spawnC = this.size.height * .1
-      this.spawnD = this.size.height * .5
-}
-
-Caynon.prototype.load = function () {
-      this.reloadFireworks()
-
-      if (this.counter === 15) {
-            this.counter = 0
-            this.addNewFireWords()
-      } else {
-            this.counter++
+      this.horizontalCenter = 0
+      this.shootingArea = {
+            pointA : 0,
+            pointB : 0,
+            pointC : 0,
+            pointD : 0
       }
-      this.deleteFirewordsEnd()
+      this.resizeScreen()
+      window.onresize = () => cyn.resizeScreen()
 }
 
-Caynon.prototype.reloadFireworks = function () {
+Caynon.prototype.resizeScreen = function () {
+      this.size.width = this.canvas.width = window.innerWidth
+      this.horizontalCenter = this.size.width / 2 | 0
+      this.shootingArea.pointA = this.horizontalCenter - this.horizontalCenter / 4 | 0
+      this.shootingArea.pointB = this.horizontalCenter + this.horizontalCenter / 4 | 0
+      this.size.height = this.canvas.height = window.innerHeight
+      this.shootingArea.pointC = this.size.height * .1
+      this.shootingArea.pointD = this.size.height * .5
+}
+
+Caynon.prototype.shootingFireworks = function () {
       this.context.globalCompositeOperation = 'hard-light'
       this.context.fillStyle = 'rgba(20,20,20,0.15)'
       this.context.fillRect(0, 0, this.size.width, this.size.height)
@@ -46,57 +37,62 @@ Caynon.prototype.reloadFireworks = function () {
       for (let firework of this.fireworks) {
             firework.shooting()
 
-            if (firework.hitBlank()) {
-                  this.addNewFireWordsExplote(firework.endPoint.x, firework.endPoint.y, firework.color)
+            if (firework.exploteOrNotExplote()) {
+                  this.createExplosion(firework.endPoint.x, firework.endPoint.y, firework.color)
             }
       }
+
+      this.extinguishFirework()
 }
 
-Caynon.prototype.addNewFireWords = function () {
-      const x0 = random(this.spawnA, this.spawnB)
-      const y0 = this.size.height
-      const x1 = random(0, this.size.width)
-      const y1 = random(this.spawnC, this.spawnD)
+Caynon.prototype._random = function (min, max) {
+      return Math.random() * (max - min + 1) + min | 0
+}
 
-      const hue = random(300, 450)
+Caynon.prototype.createNewFirework = function () {
+      const x0 = this._random(this.shootingArea.pointA, this.shootingArea.pointB)
+      const y0 = this.size.height
+      const x1 = this._random(0, this.size.width)
+      const y1 = this._random(this.shootingArea.pointC, this.shootingArea.pointD)
+
+      const color = this._random(300, 450)
 
       const newFirewords = new FireworkExplote(x0,
             y0,
             x1,
             y1,
-            hue,
+            color,
             this.context)
 
       this.fireworks.push(newFirewords)
 }
 
-Caynon.prototype.addNewFireWordsExplote = function (x, y, hue) {
-
-      const offsprings = random(30, 110)
-      let start = offsprings / 2;
+Caynon.prototype.createExplosion = function (x, y, color) {
+      
+      const PI = Math.PI * 2
+      const radioOfTheExplote = this._random(30, 110)
+      let start = radioOfTheExplote / 2;
 
       for (let i = 0; i < start; i++) {
-            let targetX = x + offsprings * Math.cos(PI2 * i / start) | 0
-            let targetY = y + offsprings * Math.sin(PI2 * i / start) | 0
+            let targetX = x + radioOfTheExplote * Math.cos(PI * i / start) | 0
+            let targetY = y + radioOfTheExplote * Math.sin(PI * i / start) | 0
             const newFirewords = new Firework(x,
                   y,
                   targetX,
                   targetY,
-                  hue,
+                  color,
                   this.context)
 
             this.fireworks.push(newFirewords)
       }
 }
 
-Caynon.prototype.deleteFirewordsEnd = function () {
-      if (this.fireworks.length > 1000) {
-            this.fireworks = this.fireworks.filter((firework) => { return !firework.isNotDead() })
-            this.context.globalCompositeOperation = "source-over";
-      }
+Caynon.prototype.extinguishFirework = function () {
+      this.fireworks = this.fireworks.filter((firework) => { return firework._hitTheTarget() })
+      this.context.globalCompositeOperation = "source-over";
 }
 
-function Firework(_x0, _y0, _x1, _y1, _color, _context, _children) {
+function Firework(_x0, _y0, _x1, _y1, _color, _context, _explote) {
       this.startPoint = {
             x: _x0,
             y: _y0
@@ -108,46 +104,35 @@ function Firework(_x0, _y0, _x1, _y1, _color, _context, _children) {
       this.color = _color
       this.context = _context
       this.history = []
-      this.stateDead = false
-      this.children = _children || false
+      this.explote = _explote || false
 }
 
 Firework.prototype.shooting = function () {
-      if (this.stateDead === false) {
 
-            if (this.targetPunch()) {
-                  this._addNewPoint()
-            }
+      this._addNextPointToTheTrajectory()
 
-            if (this.history.length === 0) {
-                  this.stateDead = true
-            }
+      this._drawTrajectory()
 
-            this._drawMultiplePoints()
-
-            this.deleteFisrtPoint()
-      }
+      this._deleteOldPointInTheTrajectory()
 }
 
-Firework.prototype.isNotDead = function () {
-      return this.stateDead
-
-}
-
-Firework.prototype.targetPunch = function () {
+Firework.prototype._hitTheTarget = function () {
       let xDiff = this.endPoint.x - this.startPoint.x
       let yDiff = this.endPoint.y - this.startPoint.y
-      if (Math.abs(xDiff) > 3 || Math.abs(yDiff) > 3) {
-            return true
+      return Math.abs(xDiff) > 3 || Math.abs(yDiff) > 3
+}
+
+Firework.prototype._addNextPointToTheTrajectory = function () {
+      if (this._hitTheTarget()) {
+            this._addNewPoint()
       }
-      return false
 }
 
-Firework.prototype.hitBlank = function () {
-      return this.children
+Firework.prototype.exploteOrNotExplote = function () {
+      return this.explote
 }
 
-Firework.prototype._drawMultiplePoints = function () {
+Firework.prototype._drawTrajectory = function () {
       for (let i = 0; this.history.length > i; i++) {
             let point = this.history[i]
             this._drawSinglePoint(point.x, point.y)
@@ -155,13 +140,14 @@ Firework.prototype._drawMultiplePoints = function () {
 }
 
 Firework.prototype._drawSinglePoint = function (x, y) {
+      const PI = Math.PI * 2
       this.context.beginPath()
       this.context.fillStyle = 'hsl(' + this.color + ',100%,50%)'
-      this.context.arc(x, y, 2, 0, PI2, false)
+      this.context.arc(x, y, 2, 0, PI, false)
       this.context.fill()
 }
 
-Firework.prototype.deleteFisrtPoint = function () {
+Firework.prototype._deleteOldPointInTheTrajectory = function () {
       this.history.shift()
 }
 
@@ -181,29 +167,31 @@ function FireworkExplote(_x0, _y0, _x1, _y1, _color, _context) {
 
 FireworkExplote.prototype = Object.create(Firework.prototype);
 
-FireworkExplote.prototype.hitBlank = function () {
-      const resultado = this.isNotDead() && this.children
-      if (resultado) {
-            this.children = false
+FireworkExplote.prototype.exploteOrNotExplote = function () {
+      const decision = !this._hitTheTarget() && this.explote
+      if (decision) {
+            //The firework explote just one time
+            this.explote = false
       }
-      return resultado
+      return decision
 }
 
-const PI2 = Math.PI * 2
-let random = (min, max) => Math.random() * (max - min + 1) + min | 0
 
 let canvas = document.getElementById('usa')
 let ctx = canvas.getContext('2d')
+const cyn = new Caynon(canvas, ctx)
+let counter = 0
 
-const cyn = new Caynon(ctx)
-cyn.resize()
-window.onresize = () => cyn.resize()
-
-function startShow() {
-      requestAnimationFrame(startShow)
-
-      cyn.load()
-
+function StartShow() {
+      requestAnimationFrame(StartShow)
+      if(counter === 15){
+            cyn.createNewFirework()
+            counter = 0
+      }else{
+            counter++
+      }
+      cyn.shootingFireworks()
 }
 
-startShow()
+
+StartShow()
