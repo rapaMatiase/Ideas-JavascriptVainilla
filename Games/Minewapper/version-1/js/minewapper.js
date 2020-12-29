@@ -29,14 +29,29 @@ const SquardState = {
 }
 
 function AddHistory(history, mineWapperDesboard, desboardValues) {
-    history.linetime.push({ mineWapperDesboard, desboardValues })
+    const copyMineWapperDesboard = {el : 0, matrix : []} 
+    const copyDesboardValues = {...desboardValues}
+    for(var i = 0; i < mineWapperDesboard.matrix.length; i++){
+        copyMineWapperDesboard.matrix.push([])
+        for(var j = 0; j < mineWapperDesboard.matrix[i].length; j++){
+            const item = { ...mineWapperDesboard.matrix[i][j]}
+            copyMineWapperDesboard.matrix[i].push(item)
+        }
+    }
+    history.linetime.push({ mineWapperDesboard : copyMineWapperDesboard, desboardValues : copyDesboardValues })
     console.log(history)
+    DrawHistorty(mineWapperDesboard, desboardValues, history)
+
 }
 
 function RestoreHistory(history, mineWapperDesboard, desboardValues, i) {
     const item = history.linetime[i]
     desboardValues = item.desboardValues
     mineWapperDesboard = item.mineWapperDesboard
+    history.linetime = history.linetime.splice(0, i)
+    DrawHistorty(mineWapperDesboard, desboardValues, history)
+    DrawGame(mineWapperDesboard, desboardValues, history)
+
 }
 
 /**
@@ -153,7 +168,9 @@ function Show(el, mineWapperDesboard, desboardValues, history) {
                 GameOver(true, desboardValues)
                 AddHistory(history, mineWapperDesboard, desboardValues)
             } else if (mineWapperDesboard.matrix[x][y].content === 0) {
-                ShowAllNumberZero(x, y, mineWapperDesboard, desboardValues, desboardValues)
+                ShowAllNumberZero(x, y, mineWapperDesboard, desboardValues,  history)
+            }else{
+                
             }
         }
         UpdateView(x, y, mineWapperDesboard, desboardValues)
@@ -163,7 +180,7 @@ function Show(el, mineWapperDesboard, desboardValues, history) {
 
 }
 
-function ShowAllNumberZero(x, y, mineWapperDesboard, desboardValues) {
+function ShowAllNumberZero(x, y, mineWapperDesboard, desboardValues, history) {
     const lowerX = (x - 1) < 0 ? 0 : (x - 1)
     const lowerY = (y - 1) < 0 ? 0 : (y - 1)
 
@@ -175,10 +192,11 @@ function ShowAllNumberZero(x, y, mineWapperDesboard, desboardValues) {
             if (mineWapperDesboard.matrix[i][j].state == SquardState.COVER) {
                 if (mineWapperDesboard.matrix[i][j].content === 0) {
                     const el = document.getElementById(mineWapperDesboard.matrix[i][j].id)
-                    Show(el, mineWapperDesboard, desboardValues)
+                    Show(el, mineWapperDesboard, desboardValues, history)
                 } else if (mineWapperDesboard.matrix[x][y].content == ! -1) {
                     const el = document.getElementById(mineWapperDesboard.matrix[i][j].id)
-                    Show(el, mineWapperDesboard, desboardValues)
+                    Show(el, mineWapperDesboard, desboardValues, history)
+                    AddHistory(history, mineWapperDesboard, desboardValues)
                 }
             }
 
@@ -200,6 +218,7 @@ function DrawSquard(squard) {
 
 function DrawGame(mineWapperDesboard, desboardValues, history) {
     const padre = document.getElementById("main")
+    padre.innerHTML = ""
     padre.style = `grid-template: repeat(${desboardValues.numberOfRow}, 1fr) / repeat(${desboardValues.numberOfRow}, 1fr)`;
     for (var i = 0; i < desboardValues.numberOfRow; i++) {
         for (var j = 0; j < desboardValues.numberOfRow; j++) {
@@ -210,13 +229,31 @@ function DrawGame(mineWapperDesboard, desboardValues, history) {
                 Marked(e.target, mineWapperDesboard, desboardValues, history)
             })
             padre.appendChild(squarElement)
+            UpdateView(i, j, mineWapperDesboard, desboardValues)
+
         }
     }
+
 
 
     document.getElementById("mine").appendChild(document.createTextNode(desboardValues.numberOfMines))
     document.getElementById("uncover").appendChild(document.createTextNode(desboardValues.unCoverSquard))
     document.getElementById("marketed").appendChild(document.createTextNode(desboardValues.markedSquard))
+}
+
+function DrawHistorty(mineWapperDesboard, desboardValues, history){
+    const el = document.getElementById("history")
+    el.innerHTML = ""
+    for(var i = 0; i < history.linetime.length; i++){
+        const elItem = document.createElement("div")
+        elItem.classList.add("item")
+        elItem.setAttribute("id", i)
+        elItem.appendChild(document.createTextNode(`MOvimiento ${i+1}`))
+        elItem.addEventListener("click", function(e){
+            RestoreHistory(history, mineWapperDesboard, desboardValues, e.target.getAttribute("id"))
+        })
+        el.appendChild(elItem)
+    }
 }
 
 

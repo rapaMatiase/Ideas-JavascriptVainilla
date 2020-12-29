@@ -26,3 +26,13 @@
     width: 150px;
 }
 
+#history{
+    display:flex;
+    height: 200px;
+    width: 100px;
+}
+.item{
+    height: 40px;
+    width: 100%;
+    background-color: crimson;
+}
