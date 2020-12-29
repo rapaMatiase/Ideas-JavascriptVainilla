@@ -37,7 +37,7 @@ Caynon.prototype.shootingFireworks = function () {
       for (let firework of this.fireworks) {
             firework.shooting()
 
-            if (firework.exploteOrNotExplote()) {
+            if (firework.exploteOrNotExplote()) {               
                   this.createExplosion(firework.endPoint.x, firework.endPoint.y, firework.color, firework.getNextLevelExplote())
             }
       }
@@ -56,13 +56,13 @@ Caynon.prototype.createNewFirework = function () {
       const y1 = this._random(this.shootingArea.pointC, this.shootingArea.pointD)
 
       const color = this._random(300, 450)
-
+      
       const newFirewords = new Firework(x0,
             y0,
             x1,
             y1,
             color,
-            this.context,1,
+            this.context,
             2)
 
       this.fireworks.push(newFirewords)
@@ -131,18 +131,13 @@ Firework.prototype._addNextPointToTheTrajectory = function () {
       }
 }
 
-Firework.prototype.exploteOrNotExplote = function () {
-      
-      
+Firework.prototype.exploteOrNotExplote = function () {      
       const decision = !this._hitTheTarget() && this.exploteLevel !== 0
-      if (decision) {
-            //The firework explote just one time
-            this.explote = false
-      }
       return decision
 }
 
 Firework.prototype.getNextLevelExplote = function(){
+      
       return this.exploteLevel - 1
 }
 
