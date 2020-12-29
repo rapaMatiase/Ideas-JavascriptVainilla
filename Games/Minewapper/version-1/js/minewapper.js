@@ -196,6 +196,8 @@ function DrawSquard(squard) {
     return squarElement
 }
 
+
+
 function DrawGame(mineWapperDesboard, desboardValues, history) {
     const padre = document.getElementById("main")
     padre.style = `grid-template: repeat(${desboardValues.numberOfRow}, 1fr) / repeat(${desboardValues.numberOfRow}, 1fr)`;
@@ -215,8 +217,8 @@ function DrawGame(mineWapperDesboard, desboardValues, history) {
     document.getElementById("mine").appendChild(document.createTextNode(desboardValues.numberOfMines))
     document.getElementById("uncover").appendChild(document.createTextNode(desboardValues.unCoverSquard))
     document.getElementById("marketed").appendChild(document.createTextNode(desboardValues.markedSquard))
-
 }
+
 
 function ChangeStateView(el, state, newState) {
     el.classList.remove(state)

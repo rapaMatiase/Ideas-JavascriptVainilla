@@ -1,7 +1,5 @@
 .squard{
-    height: 20px;
-    width: 20px;
-   
+
     border: 1px solid black ;
 }
 
@@ -24,5 +22,7 @@
 #main{
     display: grid;
     grid-template: repeat(4, 1fr) / repeat(4, 1fr);
+    height: 150px;
+    width: 150px;
 }
 
