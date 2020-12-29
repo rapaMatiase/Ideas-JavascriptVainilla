@@ -33,12 +33,12 @@ Caynon.prototype.shootingFireworks = function () {
       this.context.fillStyle = 'rgba(20,20,20,0.15)'
       this.context.fillRect(0, 0, this.size.width, this.size.height)
       this.context.globalCompositeOperation = 'lighter'
-
+      
       for (let firework of this.fireworks) {
             firework.shooting()
 
             if (firework.exploteOrNotExplote()) {
-                  this.createExplosion(firework.endPoint.x, firework.endPoint.y, firework.color)
+                  this.createExplosion(firework.endPoint.x, firework.endPoint.y, firework.color, firework.getNextLevelExplote())
             }
       }
 
@@ -57,31 +57,34 @@ Caynon.prototype.createNewFirework = function () {
 
       const color = this._random(300, 450)
 
-      const newFirewords = new FireworkExplote(x0,
+      const newFirewords = new Firework(x0,
             y0,
             x1,
             y1,
             color,
-            this.context)
+            this.context,1,
+            2)
 
       this.fireworks.push(newFirewords)
 }
 
-Caynon.prototype.createExplosion = function (x, y, color) {
+Caynon.prototype.createExplosion = function (x, y, color, explote) {
       
       const PI = Math.PI * 2
       const radioOfTheExplote = this._random(30, 110)
-      let start = radioOfTheExplote / 2;
+      let start = radioOfTheExplote / 6;
 
       for (let i = 0; i < start; i++) {
-            let targetX = x + radioOfTheExplote * Math.cos(PI * i / start) | 0
+            let targetX = x + radioOfTheExplote * Math.cos(PI * i  / start) | 0
             let targetY = y + radioOfTheExplote * Math.sin(PI * i / start) | 0
             const newFirewords = new Firework(x,
                   y,
                   targetX,
                   targetY,
                   color,
-                  this.context)
+                  this.context,
+                  explote
+                  )
 
             this.fireworks.push(newFirewords)
       }
@@ -92,7 +95,7 @@ Caynon.prototype.extinguishFirework = function () {
       this.context.globalCompositeOperation = "source-over";
 }
 
-function Firework(_x0, _y0, _x1, _y1, _color, _context, _explote) {
+function Firework(_x0, _y0, _x1, _y1, _color, _context, _exploteLevel) {
       this.startPoint = {
             x: _x0,
             y: _y0
@@ -104,7 +107,7 @@ function Firework(_x0, _y0, _x1, _y1, _color, _context, _explote) {
       this.color = _color
       this.context = _context
       this.history = []
-      this.explote = _explote || false
+      this.exploteLevel = _exploteLevel
 }
 
 Firework.prototype.shooting = function () {
@@ -129,7 +132,18 @@ Firework.prototype._addNextPointToTheTrajectory = function () {
 }
 
 Firework.prototype.exploteOrNotExplote = function () {
-      return this.explote
+      
+      
+      const decision = !this._hitTheTarget() && this.exploteLevel !== 0
+      if (decision) {
+            //The firework explote just one time
+            this.explote = false
+      }
+      return decision
+}
+
+Firework.prototype.getNextLevelExplote = function(){
+      return this.exploteLevel - 1
 }
 
 Firework.prototype._drawTrajectory = function () {
@@ -160,22 +174,6 @@ Firework.prototype._addNewPoint = function () {
 
       this.history.push(this.startPoint)
 }
-
-function FireworkExplote(_x0, _y0, _x1, _y1, _color, _context) {
-      Firework.call(this, _x0, _y0, _x1, _y1, _color, _context, true)
-}
-
-FireworkExplote.prototype = Object.create(Firework.prototype);
-
-FireworkExplote.prototype.exploteOrNotExplote = function () {
-      const decision = !this._hitTheTarget() && this.explote
-      if (decision) {
-            //The firework explote just one time
-            this.explote = false
-      }
-      return decision
-}
-
 
 let canvas = document.getElementById('usa')
 let ctx = canvas.getContext('2d')
