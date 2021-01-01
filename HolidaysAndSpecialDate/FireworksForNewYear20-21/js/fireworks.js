@@ -188,3 +188,5 @@ function StartShow() {
 
 
 StartShow()
+const url = window.location.href
+console.log(url)
