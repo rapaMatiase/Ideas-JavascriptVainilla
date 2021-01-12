@@ -1,25 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
-    MInas<div id="mine"></div>
-   MInas <p id="mines"></p>
-    Uncover <p id="uncover"></p>
-    market <p id="marketed"></p>
-    <p id="state"></p>
-    <main id="main"></main>
-    <div id="history"></div>
+    <main class="minewapper">
+        <div id="modal" class="minewapper_modal"></div>
+        <div class="minewapper_desboard" >
+            <div class="minewapper_item">
+                <p> Minas</p>
+                <p id="mine"></p>
+            </div>
+            <div class="minewapper_item"></div>
+            <div class="minewapper_item">
+                <p> Minas</p>
+                <p id="mine"></p>
+            </div>
+        </div>
+        <div id="minewapper" class="minewapper_matrix"></div>
+        <div class="minewapper_footer">
+            <div class="minewapper_item">
+                <button> Atras</button>
+            </div>
+            <div class="minewapper_item">
+                <p>History</p>
+            </div>
+            <div class="minewapper_item">
+                <button> Delante</button>
+            </div>
+        </div>
+    </main>
+
+
     <script src="js/minewapper.js"></script>
     <script>
-        StartGame("",{
-            numberOfRow : 4,
-            numberOfMines : 3,
+        StartGame("", {
+            numberOfRow: 6,
+            numberOfMines: 2,
+            elDesboardPanel: "",
+            elHistory: "",
         })
     </script>
 </body>
+
 </html>

@@ -1,11 +1,10 @@
-
-
 function StartGame(el, data) {
 
     const mineWapperDesboard = {
-        el,
+        el : minewapper,
         matrix :[]
     }
+    console.log(mineWapperDesboard.el)
 
     const desboardValues = {
         el,
@@ -15,11 +14,12 @@ function StartGame(el, data) {
         ...data
     }
 
-    const history = {el, linetime : []}
+    const history = {linetime : []}
 
     Create(mineWapperDesboard, desboardValues, history)
     DrawGame(mineWapperDesboard, desboardValues, history)
 }
+
 
 const SquardState = {
     COVER: "Cover",
@@ -29,7 +29,7 @@ const SquardState = {
 }
 
 function AddHistory(history, mineWapperDesboard, desboardValues) {
-    const copyMineWapperDesboard = {el : 0, matrix : []} 
+    const copyMineWapperDesboard = {matrix : []} 
     const copyDesboardValues = {...desboardValues}
     for(var i = 0; i < mineWapperDesboard.matrix.length; i++){
         copyMineWapperDesboard.matrix.push([])
@@ -40,7 +40,6 @@ function AddHistory(history, mineWapperDesboard, desboardValues) {
     }
     history.linetime.push({ mineWapperDesboard : copyMineWapperDesboard, desboardValues : copyDesboardValues })
     console.log(history)
-    DrawHistorty(mineWapperDesboard, desboardValues, history)
 
 }
 
@@ -49,7 +48,6 @@ function RestoreHistory(history, mineWapperDesboard, desboardValues, i) {
     desboardValues = item.desboardValues
     mineWapperDesboard = item.mineWapperDesboard
     history.linetime = history.linetime.splice(0, i)
-    DrawHistorty(mineWapperDesboard, desboardValues, history)
     DrawGame(mineWapperDesboard, desboardValues, history)
 
 }
@@ -108,13 +106,7 @@ function IsNotBomb(squard) {
     return squard.content != -1
 }
 
-/**
- * 
- * @param {*} x 
- * @param {*} y 
- * @param {*} mineWapperDesboard 
- * @param {*} desboardValues 
- */
+
 function AddNumberAroundMine(x, y, mineWapperDesboard, desboardValues) {
     const lowerLimitX = (x - 1) < 0 ? 0 : (x - 1)
     const lowerLimitY = (y - 1) < 0 ? 0 : (y - 1)
@@ -129,7 +121,6 @@ function AddNumberAroundMine(x, y, mineWapperDesboard, desboardValues) {
             }
         }
     }
-
 }
 
 function Marked(el, mineWapperDesboard, desboardValues, history) {
@@ -214,10 +205,8 @@ function DrawSquard(squard) {
     return squarElement
 }
 
-
-
 function DrawGame(mineWapperDesboard, desboardValues, history) {
-    const padre = document.getElementById("main")
+    const padre = document.getElementById("minewapper")
     padre.innerHTML = ""
     padre.style = `grid-template: repeat(${desboardValues.numberOfRow}, 1fr) / repeat(${desboardValues.numberOfRow}, 1fr)`;
     for (var i = 0; i < desboardValues.numberOfRow; i++) {
@@ -233,28 +222,10 @@ function DrawGame(mineWapperDesboard, desboardValues, history) {
 
         }
     }
+    document.getElementById("mine").innerHTML = ""
+    document.getElementById("mine").appendChild(document.createTextNode(desboardValues.numberOfMines - desboardValues.markedSquard))
+ }
 
-
-
-    document.getElementById("mine").appendChild(document.createTextNode(desboardValues.numberOfMines))
-    document.getElementById("uncover").appendChild(document.createTextNode(desboardValues.unCoverSquard))
-    document.getElementById("marketed").appendChild(document.createTextNode(desboardValues.markedSquard))
-}
-
-function DrawHistorty(mineWapperDesboard, desboardValues, history){
-    const el = document.getElementById("history")
-    el.innerHTML = ""
-    for(var i = 0; i < history.linetime.length; i++){
-        const elItem = document.createElement("div")
-        elItem.classList.add("item")
-        elItem.setAttribute("id", i)
-        elItem.appendChild(document.createTextNode(`MOvimiento ${i+1}`))
-        elItem.addEventListener("click", function(e){
-            RestoreHistory(history, mineWapperDesboard, desboardValues, e.target.getAttribute("id"))
-        })
-        el.appendChild(elItem)
-    }
-}
 
 
 function ChangeStateView(el, state, newState) {
@@ -278,19 +249,20 @@ function UpdateView(x, y, mineWapperDesboard, desboardValues) {
         element.innerHTML = ""
         element.appendChild(document.createTextNode(content))
     }
-
-    document.getElementById("uncover").innerHTML = ""
-    document.getElementById("uncover").appendChild(document.createTextNode(desboardValues.unCoverSquard))
-    document.getElementById("marketed").innerHTML = ""
-    document.getElementById("marketed").appendChild(document.createTextNode(desboardValues.markedSquard))
+    document.getElementById("mine").innerHTML = ""
+    document.getElementById("mine").appendChild(document.createTextNode(desboardValues.numberOfMines - desboardValues.markedSquard))
 
 }
 
-
+function ShowModel(message){
+    modal.style="width: 500px;height: 400px;"
+    modal.appendChild(document.createTextNode(message))
+}
 
 function GameOver(mina, desboardValues) {
     const { numberOfRow, numberOfMines, markedSquard, unCoverSquard } = { ...desboardValues }
     if ((numberOfRow * numberOfRow) == (markedSquard + unCoverSquard) && markedSquard === numberOfMines) {
+        ShowModel("GANASTE")
         desboardValues.continuePlay = false
         console.log("GANASTE")
         document.getElementById("state").appendChild(document.createTextNode("Ganaste"))
@@ -298,7 +270,7 @@ function GameOver(mina, desboardValues) {
 
     if (mina === true) {
         desboardValues.continuePlay = false
-
+        ShowModel("PERDISTE")
         console.log("PERDISTE")
         document.getElementById("state").appendChild(document.createTextNode("PERDISTE"))
 
