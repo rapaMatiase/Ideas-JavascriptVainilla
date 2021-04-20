@@ -27,42 +27,42 @@ function GameOver() {
     if (tatetiGame[0][0].state === tatetiGame[0][1].state
         && tatetiGame[0][0].state === tatetiGame[0][2].state &&
         tatetiGame[0][0].state !== "") {
-        alert(`Gano ${tatetiGame[0][0]}`)
+        alert(`Gano ${tatetiGame[0][0].state}`)
         gameState = true
     } else if (tatetiGame[1][0].state === tatetiGame[1][1].state
         && tatetiGame[1][0].state === tatetiGame[1][2].state
         && tatetiGame[1][0].state !== "") {
-        alert(`Gano ${tatetiGame[1][0]}`)
+        alert(`Gano ${tatetiGame[1][0].state}`)
         gameState = true
     } else if (tatetiGame[2][0].state === tatetiGame[2][1].state
         && tatetiGame[2][0].state === tatetiGame[2][2].state
         && tatetiGame[2][0].state !== "") {
-        alert(`Gano ${tatetiGame[2][0]}`)
+        alert(`Gano ${tatetiGame[2][0].state}`)
         gameState = true
     } else if (tatetiGame[0][0].state === tatetiGame[1][0].state
         && tatetiGame[0][0].state === tatetiGame[2][0].state
         && tatetiGame[0][0].state !== "") {
-        alert(`Gano ${tatetiGame[0][0]}`)
+        alert(`Gano ${tatetiGame[0][0].state}`)
         gameState = true
     } else if (tatetiGame[0][1].state === tatetiGame[1][1].state
         && tatetiGame[0][1].state === tatetiGame[1][2].state
         && tatetiGame[0][1].state !== "") {
-        alert(`Gano ${tatetiGame[0][1]}`)
+        alert(`Gano ${tatetiGame[0][1].state}`)
         gameState = true
     }else if (tatetiGame[0][2].state === tatetiGame[1][2].state
         && tatetiGame[0][2].state === tatetiGame[2][2].state
         && tatetiGame[0][2].state !== "") {
-        alert(`Gano ${tatetiGame[0][2]}`)
+        alert(`Gano ${tatetiGame[0][2].state}`)
         gameState = true
     }else if (tatetiGame[0][0].state === tatetiGame[1][1].state
         && tatetiGame[0][0].state === tatetiGame[2][2].state
         && tatetiGame[0][0].state !== "") {
-        alert(`Gano ${tatetiGame[0][0]}`)
+        alert(`Gano ${tatetiGame[0][0].state}`)
         gameState = true
     }else if (tatetiGame[0][2].state === tatetiGame[1][1].state
         && tatetiGame[0][2].state === tatetiGame[2][0].state
         && tatetiGame[0][2].state !== "") {
-        alert(`Gano ${tatetiGame[0][2]}`)
+        alert(`Gano ${tatetiGame[0][2].state}`)
         gameState = true
     }else if(squardBlock === 9){
         alert("Nadie gano")
