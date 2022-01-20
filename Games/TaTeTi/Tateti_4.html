@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+        /* 
+        PASO 4
+        Declaramos dos variables globales como descibirmos abajo y las inicializamos como verdaderas por ahora para forzar la iteracion del DO WHILE (aunque dijimos que no queriamos hacer eso). Mas adelante agregaremos el codigo que juzgara el estado de tablero para asignar el valor correspondiente a estas variables.
+        */
+        let isNotWinner = true
+        let isNotTie = true 
+
+        let turn = "X"
+
+        /* 
+        PASO 1
+        El inconveniente que tiene nuestro programa es que solo puede jugar el jugador "X" y una sola vez, no hay segundo turno, mucho menos se puede terminar el juego. Por lo que necesitamos poder iterar varias veces. 
+        
+        El FOR queda descartado porque aunque la cantidad de casillas son fijas y no se puede modificar el valor de una casilla ya ocupada. Si el usuario ingresa un posicion ocupada deberia mostrar un mensaje indicando el error y pedir una nueva posicion en donde jugar, por lo que perderiamos una iteracion en un movimiento sin jugada. 
+
+        El WHILE parece una mejor opcion que el FOR porque podemos iterar la cantidad de veces necesarias hasta terminar el juego. Basicamente la condicion logica deberia relejar que mientras ningun jugador haya ganado o no se haya llegado a un empate. Tal vez el unico empedimento es que necesitariamos forzar los valores de las variables que representan esos estados tal que permita que el WHILE itere una primera vez, porque si la condicion es falsa desde el principio nunca itera, por lo tanto nunca se juega.
+
+        El DO WHILE temrina siendo la mejor opcion porque trae la ventaja de la condicion logica descripta en el WHILE con la unica diferenica de que primero ejecuta el segmento de codigo que contiene y luego pregunta si debe volver a iterar. Por lo que de esta forma no debemos forzar ninguna valor con anterioridad como con el WHILE. 
+        */
+
+        /* 
+        PASO 2
+        Debemos determinar que parte del codigo esta dentro y fuera del DO WHILE. Las variables globales nunca deben estar dentro del ciclo, porque entonces estariamos re inicializando en cada iteracion, las jugadas se borrarian al volver iniciar. El resto del codigo que hicimos si corresponderia ir dentro del DO WHILE porque necesitamos para que el juego avance;
+            - Solicitar las coordenadas
+            - Convertirlas a numero las coordenadas ingresadas
+            - Reflejar la jugada y pasar de turno.
+        */
+
+        do{
+            let coordX = prompt("Ingrese la coordenada en X")
+            let coordY = prompt("Ingrese la coordenada en Y")
+
+            coordX = parseInt(coordX)
+            coordY = parseInt(coordY)
+            
+            if(turn == "X"){
+                //Reflejamos la jugada
+                desboardTateti[coordX][coordY]  = "X"
+                //Cambiamos el turno
+                turn = "0"
+            }else{
+                //Reflejamos la jugada
+                desboardTateti[coordX][coordY]  = "O"
+                //Cambiamos el turno
+                turn = "X"
+            }
+
+            /*
+            PASO 4 - 3
+            Lo ultimo paso para terminar el ciclo es crear la condicion logica que antes habiamos comentado en el parte 1. Necesitamos determinar si hay un ganador o perdedor (depende de como lo quieras ver) o si termina habiendo empate. 
+            
+            Por ahora no vamos a crear el codigo necesario para determinar si el estado de la matrix refleja un ganador o perdedor, pero si implementaremos dos variables globales que representen ese estado. 
+
+            Mientras no haya un ganador y no haya un empate, seguimos iterando. 
+            */
+        }while(isNotWinner && isNotTie)
+
+    </script>
+</body>
+</html>

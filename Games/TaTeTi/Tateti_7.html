@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        let isNotWinner = true
+        let isNotTie = true 
+
+        const SIMBOLO_JUGADOR_1 = "O"
+        const SIMBOLO_JUGADOR_2 = "X"
+        const VALOR_CASILLA_VACIA = "-"
+        let turn = "X"
+
+        do{
+            let coordX = prompt("Ingrese la coordenada en X")
+            let coordY = prompt("Ingrese la coordenada en Y")
+
+            coordX = parseInt(coordX)
+            coordY = parseInt(coordY)
+
+            //Reflejamos la jugada
+            desboardTateti[coordX][coordY]  = turn
+            
+            //Cambiamos el turno
+            if(turn == SIMBOLO_JUGADOR_2){
+                turn = SIMBOLO_JUGADOR_1
+            }else{
+                turn = SIMBOLO_JUGADOR_2
+            }
+
+            /* 
+            PASO 1
+            Ahora si podemos arrancar con la creacion de los segmentos de los codigo para controlar si algun jugador gano. Despues crearemos el codigo correspondiente al empate.
+
+            Tenemos que controlar tres situaciones;
+            - 3 en linea horizontal sea en la fila 0, 1 o 2
+            - 3 en linea vertical sea en la columna 0, 1 o 2
+            - 3 en linea diagonal sea en la principal o la traspuesta.
+            
+            Arrancamos con el primer y mas sensillo caso, controlamos en 3 en lina horizontal.
+            */
+
+            /* 
+            PASO 2
+            ¿Que posiciones deberiamos controlar para el 3 en linea horizontal en la primera fila?
+            Las posiciones son;
+            - Casilla 1 -> [0][0]
+            - Casilla 2 -> [0][1]
+            - Casilla 3 -> [0][2]
+
+            Ahora armamos un IF para determinar si los elementos en estas casillas son iguales. Tambien hay que considerar que sean distintas al valor que representa el vacio "-". Tambien declaramos un CONST para el valor vacio para evitar hardcodear valores en el codigo como explicamos antes para los valores de los jugadores.
+            */
+
+            if(desboardTateti[0][0] == desboardTateti[0][1] && desboardTateti[0][0] == desboardTateti[0][2] && desboardTateti[0][0] != VALOR_CASILLA_VACIA && desboardTateti[0][1] != VALOR_CASILLA_VACIA && desboardTateti[0][2] != VALOR_CASILLA_VACIA){
+                /* Ganar implica volver la variable "isNotWinner" true */
+                isNotWinner = true
+                /* Esto hace que el ciclo cierre. */
+                console.log("Ganaste")
+            }
+
+            /* 
+            PASO 3
+            Repetimos el proceso para las posiciones de la segunda fila.
+            Las posiciones son; 
+            - Casilla 1 -> [1][0]
+            - Casilla 2 -> [1][1]
+            - Casilla 3 -> [1][2]
+
+            */
+
+            if(desboardTateti[1][0] == desboardTateti[1][1] && desboardTateti[1][0] == desboardTateti[1][2] && desboardTateti[1][0] != VALOR_CASILLA_VACIA && desboardTateti[1][1] != VALOR_CASILLA_VACIA && desboardTateti[1][2] != VALOR_CASILLA_VACIA){
+                /* Ganar implica volver la variable "isNotWinner" true */
+                isNotWinner = true
+                /* Esto hace que el ciclo cierre. */
+                console.log("Ganaste")
+            }
+
+            /* 
+            PASO 4
+            Repetimos el proceso para las posiciones de la tercera fila.
+            Las posiciones son; 
+            - Casilla 1 -> [2][0]
+            - Casilla 2 -> [2][1]
+            - Casilla 3 -> [2][2]
+
+            */
+
+            if(desboardTateti[2][0] == desboardTateti[2][1] && desboardTateti[2][0] == desboardTateti[2][2] && desboardTateti[2][0] != VALOR_CASILLA_VACIA && desboardTateti[2][1] != VALOR_CASILLA_VACIA && desboardTateti[2][2] != VALOR_CASILLA_VACIA){
+                /* Ganar implica volver la variable "isNotWinner" true */
+                isNotWinner = true
+                /* Esto hace que el ciclo cierre. */
+                console.log("Ganaste")
+            }
+
+            /* 
+            Estos tres IF cubre las tres situaciones que se pueden presentar horizontalmente el 3 en linea. 
+
+            ¿No hay problema de que sean 3 IF distintos? ¿Porque no son IF-ELSE-IF?
+
+            No hay ningun problema que sean todas estructuras separadas. Este 
+            */
+        }while(isNotWinner && isNotTie)
+
+    </script>
+</body>
+</html>

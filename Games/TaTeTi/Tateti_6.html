@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        let isNotWinner = true
+        let isNotTie = true 
+
+        const SIMBOLO_JUGADOR_1 = "O"
+        const SIMBOLO_JUGADOR_2 = "X"
+
+        let turn = "X"
+
+        do{
+            let coordX = prompt("Ingrese la coordenada en X")
+            let coordY = prompt("Ingrese la coordenada en Y")
+
+            coordX = parseInt(coordX)
+            coordY = parseInt(coordY)
+
+            /* 
+            PASO 1 
+            Ahora este IF esta mucho mejor, pero se puede hacer dos mejoras mas. Podemos observar un considencia de la cual podemos simplificar el codigo, y es la considencia entre el valor de la variable "turn" y el valor que se asigna en "desboardTateti[coordX][coordY]". 
+            */
+            
+            // IF ORIGINAL 
+            // if(turn == SIMBOLO_JUGADOR_2){
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = SIMBOLO_JUGADOR_2
+            //     //Cambiamos el turno
+            //     turn = SIMBOLO_JUGADOR_1
+            // }else{
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = SIMBOLO_JUGADOR_1
+            //     //Cambiamos el turno
+            //     turn = SIMBOLO_JUGADOR_2
+            // }
+
+            /* 
+            Por lo que podemos plantear la siguiente forma el IF, utilizando la variables de "turn" para asignar el valor en "desboardTateti".
+            */
+
+            // if(turn == SIMBOLO_JUGADOR_2){
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = turn
+            //     //Cambiamos el turno
+            //     turn = SIMBOLO_JUGADOR_1
+            // }else{
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = turn
+            //     //Cambiamos el turno
+            //     turn = SIMBOLO_JUGADOR_2
+            // }
+
+            /* 
+            PASO 2
+            Ahora podemos ver que ocurre una error en el IF de arriba que tipicamente en programacion se señala el deber evitar. Repetir codigo. 
+            */
+
+            //Reflejamos la jugada
+            desboardTateti[coordX][coordY]  = turn
+            
+            //Cambiamos el turno
+            if(turn == SIMBOLO_JUGADOR_2){
+                turn = SIMBOLO_JUGADOR_1
+            }else{
+                turn = SIMBOLO_JUGADOR_2
+            }
+
+            /* 
+            PASO EXTRA
+            Se puede cambiar el IF por una terna como la de abajo, pero dejamos demasiado simplificado el codigo, y todavia no sabemos si vamos a necesitar hacer algo mas al momento de cambiar de turno. Por lo tanto vamos a dejarlo asi y sin al final no necesitamos hacer nada, lo podemos cambiar.
+            */
+
+            // turn = turn == SIMBOLO_JUGADOR_2 ? SIMBOLO_JUGADOR_1 : SIMBOLO_JUGADOR_2
+
+        }while(isNotWinner && isNotTie)
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+
+    </main>
+    <script>
+
+const minewapperContents = [
+    [-1, 1, 0],
+    [ 1, 1, 1],
+    [ 0, 1, -1]
+]
+
+
+let gameState = false
+
+        function RightClick(i, j){
+            if(gameState == false){
+                if(minewapperState[i][j] == "c"){
+                    minewapperState[i][j] = "d"
+                    if(minewapperContents[i][j] == -1){
+                        gameState = true
+                    }
+                }else{
+                    alert("No puedes descubirir una celda descubierta")
+                }
+            }else{
+
+            }
+        }
+
+        function LeftClick(i, j){
+            if(gameState == false){
+
+            }
+        }
+    </script>
+</body>
+</html>

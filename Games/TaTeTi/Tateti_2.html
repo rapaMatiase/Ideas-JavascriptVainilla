@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        /* 
+        PASO 1
+        Estamos implementando el paradigma estructurado con un formato de programa de consola, pero no se puede solicitar valores por consola, por lo tanto vamos a utilizar dos prompt para solicitar la coordendas x e y.
+
+        Consideramos que el usuario siempre ingresa un valor valido. Los cuales son 0, 1, y 2 que representa el primer, segundo y tercer posiciones en los arrays.
+        */
+
+        let coordX = prompt("Ingrese la coordenada en X")
+        let coordY = prompt("Ingrese la coordenada en Y")
+
+        /* 
+        El valor ingresado por medio de los prompts son del tipo String aunque haya ingresado el usuario caracteres solo numericos. Por lo que convertiremos los valores ingresados a valor numerico con la fucnion parseInt.
+        */
+
+        coordX = parseInt(coordX)
+        coordY = parseInt(coordY)
+
+        /* 
+        PASO 2
+        Teniendo la posicion, ahora necesito reflejar la jugada en el tablero. Lo hacemos remplazando el valor "-" en la posicion en la matrix por "X" dejando la constancia de la jugada.
+         */
+        desboardTateti[coordX][coordY]  = "X"
+
+    </script>
+</body>
+</html>

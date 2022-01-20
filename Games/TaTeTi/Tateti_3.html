@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        /* 
+        PASO 4
+        Creamos una variable llamada "turno" cuyo valor represente a cual jugador le toca jugar el proximo turno. Por buenas practicas, las variables globales deben estar declaradas al principio del programa. Esto tiene dos finalidades; la primera facilitar el controlar no declarar dos variables distintas con un mismo fin y la segunda asegurar que la variable ya se encuentra declarada e inicializada antes de cualquier uso.  
+        */
+        let turn = "X"
+
+        let coordX = prompt("Ingrese la coordenada en X")
+        let coordY = prompt("Ingrese la coordenada en Y")
+
+        coordX = parseInt(coordX)
+        coordY = parseInt(coordY)
+
+
+        /* 
+        PASO 1
+        El problema con siguiente linea de codigo es que el jugador "X" puede jugar, pero luego no podemos alternar el simbolo para que el otro jugador juega. 
+        */
+
+        // tableroDeTateti[coordX][coordY]  = "X"
+
+
+        /* 
+        PASO 2
+        Claramente necesitamos plantear un IF para poder lograr esa alternancia entre los dos jugadores. Donde en un camino del IF en la posicion de la matrix se guarda la "X" y en el otro camino, se guarda un "O".
+        */
+
+        // if(){
+        //     tableroDeTateti[coordX][coordY]  = "X"
+        // }else{
+        //     tableroDeTateti[coordX][coordY]  = "O"
+        // }
+
+        /*
+        Nos surge un problema, no tenemos ninguna variable cuyo estado nos permita determinar de quien fue el utlimo turno.
+        */
+        
+        /* 
+        PASO 3
+        Teniendo declara la variable turno, ahora si podemos terminar el IF.
+        */
+        
+        if(turn == "X"){
+            //Reflejamos la jugada
+            desboardTateti[coordX][coordY]  = "X"
+            //Cambiamos el turno
+            turn = "0"
+        }else{
+            //Reflejamos la jugada
+            desboardTateti[coordX][coordY]  = "O"
+            //Cambiamos el turno
+            turn = "X"
+        }
+
+        /* Este IF ya funciona, nos permite alternar entre turno. Obvio que se puede mejorar la implementacion del mismo, pero lo haremos mas adelante. Ahora mismo considero mas importante probar el funcionamiento de lo hecho. */
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        let isNotWinner = true
+        let isNotTie = true 
+
+        const SIMBOLO_JUGADOR_1 = "O"
+        const SIMBOLO_JUGADOR_2 = "X"
+        const VALOR_CASILLA_VACIA = "-"
+        let turn = "X"
+
+        do{
+            let coordX = prompt("Ingrese la coordenada en X")
+            let coordY = prompt("Ingrese la coordenada en Y")
+
+            coordX = parseInt(coordX)
+            coordY = parseInt(coordY)
+
+            //Reflejamos la jugada
+            desboardTateti[coordX][coordY]  = turn
+            
+            //Cambiamos el turno
+            if(turn == SIMBOLO_JUGADOR_2){
+                turn = SIMBOLO_JUGADOR_1
+            }else{
+                turn = SIMBOLO_JUGADOR_2
+            }
+
+            for(let i = 0 ; i < desboardTateti.length ; i++){
+                if(desboardTateti[i][0] == desboardTateti[i][1] && desboardTateti[i][0] == desboardTateti[0][2] && desboardTateti[0][0] != VALOR_CASILLA_VACIA && desboardTateti[0][1] != VALOR_CASILLA_VACIA && desboardTateti[0][2] != VALOR_CASILLA_VACIA){
+                    /* Ganar implica volver la variable "isNotWinner" true */
+                    isNotWinner = true
+                    /* Esto hace que el ciclo cierre. */
+                    console.log("Ganaste")
+                }
+            }
+
+             /* 
+            PASO 1
+            Planteamos de la misma forma el lista do posiciones a controlar para controlar un 3 en linea verticual.
+
+            - Casilla 1 -> [0][0]
+            - Casilla 2 -> [1][0]
+            - Casilla 3 -> [2][0]
+
+            - Casilla 1 -> [0][1]
+            - Casilla 2 -> [1][1]
+            - Casilla 3 -> [2][1]
+
+            - Casilla 1 -> [0][2]
+            - Casilla 2 -> [1][2]
+            - Casilla 3 -> [2][2]
+
+            Observamos que ocurre el mismo fenomeno que antes. 
+
+            */
+
+            for(let j = 0 ; j < desboardTateti.length ; j++){
+                if(desboardTateti[0][j] == desboardTateti[1][j] && desboardTateti[0][j] == desboardTateti[0][2] && desboardTateti[0][0] != VALOR_CASILLA_VACIA && desboardTateti[0][1] != VALOR_CASILLA_VACIA && desboardTateti[0][2] != VALOR_CASILLA_VACIA){
+                    /* Ganar implica volver la variable "isNotWinner" true */
+                    isNotWinner = true
+                    /* Esto hace que el ciclo cierre. */
+                    console.log("Ganaste")
+                }
+            }
+        }while(isNotWinner && isNotTie)
+
+    </script>
+</body>
+</html>

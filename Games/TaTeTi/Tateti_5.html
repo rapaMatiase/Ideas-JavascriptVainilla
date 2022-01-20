@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let desboardTateti = [
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"],
+        ]
+
+        let isNotWinner = true
+        let isNotTie = true 
+
+        /* 
+        PASO 2
+        Creamos las constantes, una para el simbolo del jugador "O" y otra para el "X".
+
+        Utilizamos la palabra reservada CONST para crear la variables con el fin de que estos no puedan ser modificadas durante la ejecucion del programa por error. Intenta asignar un nuevo valor, y veras un error en la consola del navegador.
+        */
+        const SIMBOLO_JUGADOR_1 = "O"
+        const SIMBOLO_JUGADOR_2 = "X"
+
+        /* 
+        El elegir nombres no relacionados a "X" y "O", porque de este modo los nombres de las constates son validas sin importar el valor que represente a cada jugador. Si luego utilizaramos emoji "👲" y "😥", no importa uno es el jugador 1 y el otro jugador 2. Si tuvieramos los nombre "SIMBOLO_X" y "SIMBOLO_O", cuando estemos modificando o agregando funcionalidades al codigo, por lo nombres no sabemos cuales de los dos valores estamos utilizanod ("👲" o "😥") y necesitaremos ver la declaracion para recordar el valor asignado.
+        */
+
+        let turn = "X"
+
+        do{
+            let coordX = prompt("Ingrese la coordenada en X")
+            let coordY = prompt("Ingrese la coordenada en Y")
+
+            coordX = parseInt(coordX)
+            coordY = parseInt(coordY)
+            /* 
+            PASO 1 
+            Ya tenemos un programa donde podemos completar el tablero de juego. Aunque tiene varios errores (desde el punto del vista del juego) por ejemplo puedo jugar en una casilla donde ya se jugo. 
+
+            Antes de continuar vamos a refactorizar (re hacer) el siguiente codigo del IF, porque no estamos aplicando ninguna buena practica. 
+
+            El primer problema arreglar son los multiples valores hardcodeados. El inconveniente con estos valores es que cualquier cambio, requiere contar con el codigo fuente (los archivos donde esta el programa). Tambien es dificil de mantener, si por algun motivo cualquiera necesito cambiar los simbolos de los jugadores de "X" y "O" por "P" y "Q". Debo modificar 5 lineas del codigo de abajo, lo que no es muy complicado, pero si tuvieramos 1000 lineas en varios archivos distintos seguramente se nos pasaria varias lineas y eso implicaria un mal funcionamiento del programa. 
+
+            La solucion es crear una par de CONSTANTES para cada simobolo y utilizar en cualquier lugar donde necesitemos utilizar el valor. 
+            */
+
+            // IF ORIGNAL
+            // if(turn == "X"){
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = "X"
+            //     //Cambiamos el turno
+            //     turn = "0"
+            // }else{
+            //     //Reflejamos la jugada
+            //     desboardTateti[coordX][coordY]  = "O"
+            //     //Cambiamos el turno
+            //     turn = "X"
+            // }
+
+            /* 
+            PASO 3
+            Ahora podemos armar el IF otra vez con las constatntes globales creadas mas arribas.
+            */
+
+            if(turn == SIMBOLO_JUGADOR_2){
+                //Reflejamos la jugada
+                desboardTateti[coordX][coordY]  = SIMBOLO_JUGADOR_2
+                //Cambiamos el turno
+                turn = SIMBOLO_JUGADOR_1
+            }else{
+                //Reflejamos la jugada
+                desboardTateti[coordX][coordY]  = SIMBOLO_JUGADOR_1
+                //Cambiamos el turno
+                turn = SIMBOLO_JUGADOR_2
+            }
+
+            /* 
+            Ahora este codigo es mucho mas facil de mantener, porque ante cualquier cambio de
+            */
+        }while(isNotWinner && isNotTie)
+
+    </script>
+</body>
+</html>
